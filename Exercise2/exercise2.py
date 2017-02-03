@@ -22,8 +22,13 @@ def ComputeGradients(image):
   laplacian = cv2.filter2D(image, cv2.CV_32F, laplacianKernel)
 
   # Calculate the gradient magnitude
-  # TODO
   gradMag = np.zeros_like(image)
+  
+  (iend, jend) = gradMag.shape
+  
+  for i in range(0, iend):
+    for j in range(0, jend):
+      gradMag[i][j] = (dx[i][j]**2 + dy[i][j]**2)**(.5)
   
   return dx, dy, gradMag, dx2, dy2, laplacian
 
@@ -348,6 +353,15 @@ if __name__ == '__main__':
   else:
     print "Exercise 2.1.a: laplacian INCORRECT"
     if laplacian_student.shape != laplacian_correct.shape:
+      print "    The size is incorrect. The result should be the same size as the input"
+  # 2.1.a gradMag
+  gradMag_student = cv2.imread(os.path.expanduser("gradMag.png"), 0) / 255.0
+  gradMag_correct = cv2.imread(os.path.expanduser("answer-images/gradMag.png"), 0) / 255.0
+  if gradMag_student.shape == gradMag_correct.shape and np.all(np.abs(gradMag_student - gradMag_correct) < 0.01):
+    print "Exercise 2.1.a: gradMag CORRECT"
+  else:
+    print "Exercise 2.1.a: gradMag INCORRECT"
+    if gradMag_student.shape != gradMag_correct.shape:
       print "    The size is incorrect. The result should be the same size as the input"
       
   ## I warned you about the ugly code

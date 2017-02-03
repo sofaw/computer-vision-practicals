@@ -12,7 +12,7 @@ def ComputeGradients(image):
   dyKernel = np.asarray([[-1], [1]])
   dx2Kernel = np.asarray([[1, -2, 1]])
   dy2Kernel = np.asarray([[1], [-2], [1]])
-  laplacianKernel = np.asarray([[-2, 1, -2], [1, 4, 1], [-2, 1, -2]])
+  laplacianKernel = np.asarray([[-1, -2, -1], [-2, 12, -2], [-1, -2, -1]])
 
   # Apply the kernels to the image
   dx = cv2.filter2D(image, cv2.CV_32F, dxKernel)
@@ -22,8 +22,13 @@ def ComputeGradients(image):
   laplacian = cv2.filter2D(image, cv2.CV_32F, laplacianKernel)
 
   # Calculate the gradient magnitude
-  # TODO
   gradMag = np.zeros_like(image)
+  
+  (iend, jend) = gradMag.shape
+  
+  for i in range(0, iend):
+    for j in range(0, jend):
+      gradMag[i][j] = (dx[i][j]**2 + dy[i][j]**2)**(.5)
   
   return dx, dy, gradMag, dx2, dy2, laplacian
 
