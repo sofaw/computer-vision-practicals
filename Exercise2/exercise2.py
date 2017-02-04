@@ -33,6 +33,7 @@ def ComputeGradients(image):
   
   return dx, dy, gradMag, dx2, dy2, laplacian
 
+# Helper method for 2.1.b
 def convertToMag(src):
   (iend, jend) = src.shape
   
@@ -56,22 +57,25 @@ def ComputeEdges(dx, dy, gradientMagnitude):
   
   return dxEdges, dyEdges, gradientMagnitudeEdges
 
-# TODO finish this for exercise 2.1.c
+# 2.1.c
 def ComputeCanny(image):
 
-  # TODO: Compute Canny edges (using second-order gradient).
+  # Compute Canny edges (using second-order gradient).
+  # n.b. intensity values in 'image' are 8 bit
+  
+  image = cv2.Canny(image, 128, 192)
 
   return image
 
 # Exercise 2.2 ----------------------------------------------------------------------
 
-# TODO finish for exercise 2.2
+# 2.2
 def scaleSpaceEdges(image):
 
   # calculating gaussians of an image
-  gauss1 = image;
-  gauss2 = image;
-  gauss3 = image;
+  gauss1 = cv2.GaussianBlur(image, (0, 0), 1.0)
+  gauss2 = cv2.GaussianBlur(image, (0, 0), 1.6)
+  gauss3 = cv2.GaussianBlur(image, (0, 0), 2.56)
 
   # calculate the edges using code from previous exercises
   dx1, dy1, gradMag1 = ComputeGradients(image)[:3]
