@@ -93,18 +93,16 @@ def scaleSpaceEdges(image):
 
 # Exercise 2.3 ----------------------------------------------------------------------
 
-# TODO finish for exercise 2.3
+# 2.3
 def DifferenceOfGaussiansLaplacian(gauss1, gauss2, gauss3):
 
   # Calculate the Laplacian of gauss1 and gauss2
-  # TODO
-  Laplacian1 = np.zeros_like(gauss1)
+  Laplacian1 = cv2.Laplacian(gauss1, cv2.CV_32F)
   Laplacian2 = np.zeros_like(gauss1)
 
   # Calculate the difference of gaussians
-  # TODO
-  DoG1 = np.zeros_like(gauss1)
-  DoG2 = np.zeros_like(gauss1)
+  DoG1 = gauss2 - gauss1
+  DoG2 = gauss3 - gauss2
   
   return Laplacian1, Laplacian2, DoG1, DoG2
 
