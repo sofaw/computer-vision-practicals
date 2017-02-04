@@ -5,6 +5,7 @@ import cv2, numpy as np, os
 
 # Exercise 2.1 ----------------------------------------------------------------------
 
+# 2.1.a
 def ComputeGradients(image):
 
   # Define the kernels
@@ -32,13 +33,26 @@ def ComputeGradients(image):
   
   return dx, dy, gradMag, dx2, dy2, laplacian
 
-# TODO finish this for exercise 2.1.b
+def convertToMag(src):
+  (iend, jend) = src.shape
+  
+  for i in range(0, iend):
+    for j in range(0, jend):
+      src[i][j] = (src[i][j]**2)**.5
+  
+  return src
+
+# 2.1.b
 def ComputeEdges(dx, dy, gradientMagnitude):
 
-  # TODO: Threshold the images at magnitude over 0.075.
-  dxEdges = dx
-  dyEdges = dy
-  gradientMagnitudeEdges = gradientMagnitude
+  # Threshold the images at magnitude over 0.075.
+  
+  dx = convertToMag(dx)
+  dy = convertToMag(dy)  
+
+  ret, dxEdges = cv2.threshold(dx, 0.075, 1.0, cv2.THRESH_BINARY)
+  ret, dyEdges = cv2.threshold(dy, 0.075, 1.0, cv2.THRESH_BINARY)
+  ret, gradientMagnitudeEdges = cv2.threshold(gradientMagnitude, 0.075, 1.0, cv2.THRESH_BINARY)
   
   return dxEdges, dyEdges, gradientMagnitudeEdges
 
@@ -353,6 +367,15 @@ if __name__ == '__main__':
   else:
     print "Exercise 2.1.a: laplacian INCORRECT"
     if laplacian_student.shape != laplacian_correct.shape:
+      print "    The size is incorrect. The result should be the same size as the input"
+  # 2.1.a gradMag
+  gradMag_student = cv2.imread(os.path.expanduser("gradMag.png"), 0) / 255.0
+  gradMag_correct = cv2.imread(os.path.expanduser("answer-images/gradMag.png"), 0) / 255.0
+  if gradMag_student.shape == gradMag_correct.shape and np.all(np.abs(gradMag_student - gradMag_correct) < 0.01):
+    print "Exercise 2.1.a: gradMag CORRECT"
+  else:
+    print "Exercise 2.1.a: gradMag INCORRECT"
+    if gradMag_student.shape != gradMag_correct.shape:
       print "    The size is incorrect. The result should be the same size as the input"
       
   ## I warned you about the ugly code
